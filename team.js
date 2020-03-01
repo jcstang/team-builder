@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const Player = require('./player');
 
+// to hold list of players
 const players = {
     starters: [],
     sub: null
