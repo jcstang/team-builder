@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const Player = require('./player');
 
 // to hold list of players
-const players = {
+const listOfPlayers = {
     starters: [],
     sub: null
 };
@@ -22,12 +22,12 @@ function getPlayer () {
         {
             type: 'input',
             name: 'offense',
-            message: 'What is the player\'s offense score?'
+            message: 'What is the player\'s offense score (1-10)?'
         },
         {
             type: 'input',
             name: 'defense',
-            message: 'What is the player\'s defense score?'
+            message: 'What is the player\'s defense score (1-10)?'
         }
     ])
     .then(function(answers) {
@@ -41,28 +41,51 @@ function getPlayer () {
 }
 
 function buildTeam() {
-return getPlayer()
+    return getPlayer()
         .then(function(player) {
-            players.starters.push(player);
+            listOfPlayers.starters.push(player);
     
             return getPlayer();
         })
         .then(function(player) {
-            players.starters.push(player);
+            listOfPlayers.starters.push(player);
     
             return getPlayer();
         })
         .then(function(player){
-            players.sub = player;
+            listOfPlayers.sub = player;
         })
         .then(function() {
-            return players;
-        })
+            return listOfPlayers;
+        });
 }
 
+function buildExperiment() {
+    return getPlayer()
+        .then(player => {
+            listOfPlayers.starters.push(player);
+            console.log(`Welcome, ${player.name}!`);
+            return getPlayer();
+        })
+        .then(player => {
+            listOfPlayers.starters.push(player);
+            console.log(`Welcome, ${player.name}!`);
+            return getPlayer();
+        })
+        .then(player => {
+            listOfPlayers.sub = player;
+            console.log(`Welcome, ${player.name}!`);
+        })
+        .then(function() {
+
+            return listOfPlayers;
+        });
+}
+
+
+
 console.log('Build your team!');
-
-
 module.exports = {
-  buildTeam: buildTeam
+  buildTeam: buildTeam,
+  buildExperiment: buildExperiment
 };
